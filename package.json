@@ -1,6 +1,6 @@
 {
   "name": "use-combined-pagination",
-  "version": "0.0.4",
+  "version": "0.0.3",
   "description": "Made with create-react-library",
   "author": "it-nalon",
   "license": "MIT",
@@ -21,7 +21,8 @@
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "release": "run-s prepare && run-s test && release-it"
   },
   "peerDependencies": {
     "react": "^16.0.0"
@@ -70,12 +71,23 @@
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
     "react-test-renderer": "^16.13.1",
+    "release-it": "^14.11.8",
     "typescript": "^3.7.5"
   },
   "files": [
     "dist"
   ],
+  "release-it": {
+    "git": {
+      "requireCleanWorkingDir": false,
+      "requireBranch": "main",
+      "push": false
+    },
+    "github": {
+      "release": true
+    }
+  },
   "publishConfig": {
-    "registry": "http://localhost:4873"
+    "registry": "https://registry.npmjs.org/"
   }
 }
