@@ -1,6 +1,6 @@
 {
   "name": "use-combined-pagination",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A React Hook for paginating data from multiple sources 🦑",
   "author": "it-nalon",
   "license": "MIT",
