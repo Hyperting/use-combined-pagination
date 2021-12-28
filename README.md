@@ -26,7 +26,7 @@ yarn add use-combined-pagination
 
 ## Basic Usage
 
-This module is meant to be used for merge and sort multiple data sources at once, before start using this module, please read [the problem](https://github.com/chrisvxd/combine-pagination#the-problem) that this module solves.
+This module is meant to be used for merge and sort multiple data sources at once, before start using this module, please read [the problem](https://github.com/chrisvxd/combine-pagination#the-problem) that it solves.
 
 ```tsx
 import React, { Component } from 'react'
@@ -38,7 +38,7 @@ const MyDataList = () => {
   }
 
   const fetchData2 = async (page: number) => {
-    // ... fetch data from data source 1
+    // ... fetch data from data source 2
   }
 
   const { loading, data, getNext, hasNext } = useCombinedPagination({
