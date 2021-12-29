@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Source, State, UseCombinedPaginationParams, UseCombinedPaginationResult } from './types'
 
 export const get = <T = never>(obj: T, accessor: string): any =>
@@ -26,6 +26,7 @@ export const useCombinedPagination = <T = never>({
   const [state, setState] = useState<State<T>>(getInitialState<T>(getters))
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<T[]>([])
+  const [resetCounter, setResetCounter] = useState<number>(0)
 
   const _getSortKey = useCallback((hit: T) => get<T>(hit, sortKey), [sortKey])
 
@@ -160,8 +161,6 @@ export const useCombinedPagination = <T = never>({
       newState.getNext.meta.firstHit = undefined
       newState.getNext.meta.earliestLastHit = undefined
 
-      // setState(newState)
-
       for (let getterIndex = 0; getterIndex < getters.length; getterIndex++) {
         const page = newState.getNext.nextPageForGetters[getterIndex]
 
@@ -262,6 +261,23 @@ export const useCombinedPagination = <T = never>({
     return state.getNext?.nextPageForGetters.filter((i) => i !== null).length > 0
   }, [state])
 
+  const reset = useCallback(() => {
+    setState(getInitialState(getters))
+    setData([])
+  }, [getters])
+
+  const refetch = useCallback(() => {
+    reset()
+    setResetCounter(resetCounter + 1)
+  }, [reset, resetCounter])
+
+  useEffect(() => {
+    if (resetCounter > 0) {
+      getNext({})
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetCounter])
+
   return {
     getNext,
     getNextForGetter,
@@ -269,6 +285,8 @@ export const useCombinedPagination = <T = never>({
     setState,
     loading,
     data,
-    hasNext
+    hasNext,
+    reset,
+    refetch
   }
 }

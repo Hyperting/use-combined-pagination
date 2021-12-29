@@ -34,4 +34,6 @@ export type UseCombinedPaginationResult<T = never> = {
   loading: boolean
   data?: T[]
   hasNext: boolean
+  reset: () => void
+  refetch: () => void
 }

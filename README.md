@@ -77,10 +77,46 @@ const { getNext } = useCombinedPagination({
   sortKey: 'popularity'
 })
 
-...
+// ...
+
 const page1 = await getNext()
 const page2 = await getNext()
 const page3 = await getNext()
+```
+
+### refetch() Usage
+
+`refetch()` function is used to reset the data and refetch the first page of data.
+
+```tsx
+const { getNext, refetch, data } = useCombinedPagination({
+  getters: [fetchData1, fetchData2],
+  sortKey: 'popularity'
+})
+
+// ...
+
+return (
+  <>
+    <button onClick={refetch}>Refetch</button>
+    <MyDataList data={data} />
+  </>
+)
+```
+
+### reset() Usage
+
+`reset()` function is used to reset the data and the state, causing `getNext()` to refetch the first page of data.
+
+```tsx
+const { getNext, reset } = useCombinedPagination({
+  getters: [fetchData1, fetchData2],
+  sortKey: 'popularity'
+})
+
+useEffect(() => {
+  reset()
+}, [filterParams])
 ```
 
 ## More Information
@@ -92,7 +128,9 @@ More information about the problem, the solution, use cases, Framed Range Inters
 - [ ] CONTRIBUTING Guide
 - [ ] create-react-app example
 - [ ] Add tests for `loading`
-- [ ] Reset functionality
+- [x] Reset functionality
+- [ ] Auto fetch first page on mount
+- [ ] Refetch state and data on params change
 - [ ] Add support for multiple `sortKey`
 
 ## Credits

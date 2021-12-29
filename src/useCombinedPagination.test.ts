@@ -446,4 +446,85 @@ describe('useCombinedPagination Hook', () => {
       expect(result.current.hasNext).toBe(false)
     })
   })
+
+  describe('reset()', () => {
+    it('should reset state', async () => {
+      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+
+      await act(async () => {
+        await result.current.getNext()
+        await result.current.getNext()
+        await result.current.getNext()
+      })
+
+      expect(result.current.data).toEqual([
+        modernHats[0],
+        modernHats[1],
+        oldHats[0],
+        modernHats[2],
+        oldHats[1],
+        modernHats[3],
+        oldHats[2]
+      ])
+
+      act(() => {
+        result.current.reset()
+      })
+
+      expect(result.current.data).toEqual([])
+
+      await act(async () => {
+        await result.current.getNext()
+      })
+
+      expect(result.current.data).toEqual([modernHats[0], modernHats[1], oldHats[0], modernHats[2]])
+    })
+  })
+
+  describe('refetch()', () => {
+    it('should reset state and fetch the first two pages', async () => {
+      const { result, waitForValueToChange } = renderHook(() =>
+        useCombinedPagination(combinedPaginationParams)
+      )
+
+      await act(async () => {
+        await result.current.getNext()
+        await result.current.getNext()
+        await result.current.getNext()
+      })
+
+      expect(result.current.data).toEqual([
+        modernHats[0],
+        modernHats[1],
+        oldHats[0],
+        modernHats[2],
+        oldHats[1],
+        modernHats[3],
+        oldHats[2]
+      ])
+
+      act(() => {
+        result.current.refetch()
+      })
+
+      expect(result.current.data).toEqual([])
+
+      await waitForValueToChange(() => result.current.data)
+
+      expect(result.current.data).toEqual([modernHats[0], modernHats[1], oldHats[0], modernHats[2]])
+
+      await act(async () => {
+        await result.current.getNext()
+      })
+
+      expect(result.current.data).toEqual([
+        modernHats[0],
+        modernHats[1],
+        oldHats[0],
+        modernHats[2],
+        oldHats[1],
+        modernHats[3]
+      ])
+    })
+  })
 })
