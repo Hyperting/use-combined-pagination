@@ -86,7 +86,7 @@ const page3 = await getNext()
 
 ### refetch() Usage
 
-`refetch()` function is used to reset the data and refetch the first page of data.
+`refetch()` function is used to reset the data and refetch the first page.
 
 ```tsx
 const { getNext, refetch, data } = useCombinedPagination({
@@ -106,7 +106,7 @@ return (
 
 ### reset() Usage
 
-`reset()` function is used to reset the data and the state, causing `getNext()` to refetch the first page of data.
+`reset()` function is used to reset the data and the state, causing `getNext()` to refetch the first page.
 
 ```tsx
 const { getNext, reset } = useCombinedPagination({
