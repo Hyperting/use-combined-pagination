@@ -2,9 +2,20 @@
   "name": "use-combined-pagination",
   "version": "0.0.5",
   "description": "A React Hook for paginating data from multiple sources 🦑",
+  "keywords": [
+    "react",
+    "hooks",
+    "hook",
+    "combine",
+    "pagination",
+    "paginate"
+  ],
   "author": "it-nalon",
   "license": "MIT",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hyperting/use-combined-pagination"
+  },
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
