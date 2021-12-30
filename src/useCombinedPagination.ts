@@ -109,7 +109,7 @@ export const useCombinedPagination = <T = never>({
 
   const _shouldProcessPage = useCallback(
     ({ data, page, getterIndex }: { data: T[][]; page: number | null; getterIndex: number }) =>
-      data[getterIndex].length === 0 && page !== null,
+      data[getterIndex]?.length === 0 && page !== null,
     []
   )
 
@@ -153,7 +153,7 @@ export const useCombinedPagination = <T = never>({
   )
 
   const getNext = useCallback(
-    async (userOptions: any) => {
+    async (userOptions?: any) => {
       setLoading(true)
       let newState = { ...state }
 
@@ -191,7 +191,7 @@ export const useCombinedPagination = <T = never>({
           } else {
             newState.getNext.nextPageForGetters[getterIndex] = null
           }
-        } else if (newState.getNext.data[getterIndex].length > 0) {
+        } else if (newState.getNext?.data[getterIndex]?.length > 0) {
           newState.getNext.meta = _getMeta({
             currentMeta: newState.getNext.meta,
             getterIndex,
@@ -217,17 +217,7 @@ export const useCombinedPagination = <T = never>({
       setData([...data, ...trimmedPage])
       return trimmedPage
     },
-    [
-      _getData,
-      _getMeta,
-      _mergeData,
-      _shouldProcessPage,
-      _tidyData,
-      _trimPage,
-      data,
-      getters?.length,
-      state
-    ]
+    [_getData, _getMeta, _mergeData, _shouldProcessPage, _tidyData, _trimPage, data, getters, state]
   )
 
   const getNextForGetter = useCallback(
@@ -273,7 +263,7 @@ export const useCombinedPagination = <T = never>({
 
   useEffect(() => {
     if (resetCounter > 0) {
-      getNext({})
+      getNext()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetCounter])

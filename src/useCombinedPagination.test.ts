@@ -3,6 +3,7 @@
 /* eslint-disable no-await-in-loop */
 import { act, renderHook } from '@testing-library/react-hooks'
 import faker from 'faker'
+import { useMemo } from 'react'
 import { useCombinedPagination } from '.'
 
 jest.setTimeout(30000)
@@ -85,7 +86,7 @@ describe('useCombinedPagination Hook', () => {
 
   describe('getNext()', () => {
     it('get intersecting hits for first page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
       await act(async () => {
@@ -94,7 +95,7 @@ describe('useCombinedPagination Hook', () => {
       expect(page).toEqual([modernHats[0], modernHats[1], oldHats[0], modernHats[2]])
     })
     it('get intersecting hits for second page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
       await act(async () => {
@@ -104,7 +105,7 @@ describe('useCombinedPagination Hook', () => {
       expect(page).toEqual([oldHats[1], modernHats[3]])
     })
     it('get hits for third page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
       await act(async () => {
@@ -115,7 +116,7 @@ describe('useCombinedPagination Hook', () => {
       expect(page).toEqual([oldHats[2]])
     })
     it('get trailing hits for fourth page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
       await act(async () => {
@@ -127,7 +128,7 @@ describe('useCombinedPagination Hook', () => {
       expect(page).toEqual([oldHats[3], oldHats[4]])
     })
     it('return empty array when known data set is exhausted', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
       await act(async () => {
@@ -244,7 +245,7 @@ describe('useCombinedPagination Hook', () => {
 
   describe('getNextForGetter()', () => {
     it('should get next results for a specific getter', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
@@ -256,7 +257,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('should get next results from a specific getter, regardless of the getNext state', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
@@ -269,7 +270,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('should get results for a specific getter, without interfering with getNext', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let page: any
@@ -284,7 +285,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('should return [] when next page is null', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       act(() => {
         result.current.setState({
@@ -303,7 +304,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('should return [] when pages are exhausted', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNextForGetter(1)
@@ -324,7 +325,7 @@ describe('useCombinedPagination Hook', () => {
 
   describe('data', () => {
     it('get intersecting hits for first page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNext()
@@ -334,7 +335,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('get intersecting hits for second page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNext()
@@ -352,7 +353,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('get hits for third page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNext()
@@ -372,7 +373,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('get trailing hits for fourth page of known data set', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await act(async () => {
@@ -396,7 +397,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('does not change data array when known data set is exhausted', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await act(async () => {
@@ -423,7 +424,7 @@ describe('useCombinedPagination Hook', () => {
 
   describe('hasNext', () => {
     it('return true if there are more pages to get', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNext()
@@ -433,7 +434,7 @@ describe('useCombinedPagination Hook', () => {
     })
 
     it('return false if getters are exhausted', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNext()
@@ -449,7 +450,7 @@ describe('useCombinedPagination Hook', () => {
 
   describe('reset()', () => {
     it('should reset state', async () => {
-      const { result } = renderHook(() => useCombinedPagination(combinedPaginationParams))
+      const { result } = renderHook(() => useCombinedPagination({ ...combinedPaginationParams }))
 
       await act(async () => {
         await result.current.getNext()
@@ -484,7 +485,7 @@ describe('useCombinedPagination Hook', () => {
   describe('refetch()', () => {
     it('should reset state and fetch the first two pages', async () => {
       const { result, waitForValueToChange } = renderHook(() =>
-        useCombinedPagination(combinedPaginationParams)
+        useCombinedPagination({ ...combinedPaginationParams })
       )
 
       await act(async () => {
@@ -525,6 +526,35 @@ describe('useCombinedPagination Hook', () => {
         oldHats[1],
         modernHats[3]
       ])
+    })
+  })
+
+  describe('hook function input params', () => {
+    it('should accept dynamic getters without crashing', async () => {
+      let inputParams = {
+        ...combinedPaginationParams,
+        getters: [combinedPaginationParams.getters[0]]
+      }
+
+      const { result, rerender, waitForValueToChange } = renderHook(() =>
+        useCombinedPagination(inputParams)
+      )
+
+      await act(async () => {
+        await result.current.getNext()
+      })
+
+      inputParams = {
+        ...combinedPaginationParams
+      }
+      rerender()
+
+      act(() => {
+        result.current.refetch()
+      })
+
+      await waitForValueToChange(() => result.current.data)
+      expect(result.current.data).toEqual([modernHats[0], modernHats[1], oldHats[0], modernHats[2]])
     })
   })
 })
