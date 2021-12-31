@@ -229,7 +229,7 @@ export const useCombinedPagination = <T = never>({
       _tidyData,
       _trimPage,
       data,
-      getters.length,
+      getters?.length,
       loading,
       state
     ]
