@@ -221,7 +221,18 @@ export const useCombinedPagination = <T = never>({
       setData([...data, ...trimmedPage])
       return trimmedPage
     },
-    [_getData, _getMeta, _mergeData, _shouldProcessPage, _tidyData, _trimPage, data, getters, state]
+    [
+      _getData,
+      _getMeta,
+      _mergeData,
+      _shouldProcessPage,
+      _tidyData,
+      _trimPage,
+      data,
+      getters.length,
+      loading,
+      state
+    ]
   )
 
   const getNextForGetter = useCallback(
