@@ -154,6 +154,10 @@ export const useCombinedPagination = <T = never>({
 
   const getNext = useCallback(
     async (userOptions?: any) => {
+      if (loading) {
+        return []
+      }
+
       setLoading(true)
       let newState = { ...state }
 

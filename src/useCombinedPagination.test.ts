@@ -241,6 +241,44 @@ describe('useCombinedPagination Hook', () => {
         expect(allResults).toEqual(expectedResult)
       }
     })
+
+    it('should not fetch data while already fetching', async () => {
+      function timeout(ms: number) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
+      }
+
+      const { result, waitForValueToChange } = renderHook(() =>
+        useCombinedPagination({
+          ...combinedPaginationParams,
+          getters: [
+            async (page: number): Promise<any[]> => {
+              await timeout(300)
+              return getData(modernHats, page)
+            },
+            async (page: number): Promise<any[]> => {
+              await timeout(300)
+              return getData(oldHats, page)
+            }
+          ]
+        })
+      )
+
+      act(() => {
+        result.current.getNext()
+      })
+
+      act(() => {
+        result.current.getNext()
+      })
+
+      act(() => {
+        result.current.getNext()
+      })
+
+      await waitForValueToChange(() => result.current.data)
+
+      expect(result.current.data).toEqual([modernHats[0], modernHats[1], oldHats[0], modernHats[2]])
+    })
   })
 
   describe('getNextForGetter()', () => {
